@@ -57,3 +57,19 @@ pip install -r xsound/requirements.txt
 ```
 
 ## 使用
+
+服务端设计（暂不开放）
+- server.py 用户登录，语音转写接口设计
+- database.py 用户数据库设计
+
+
+启动服务
+
+```shell
+uvicorn server:app --host 0.0.0.0 --port 9031
+```
+
+客户端转写请参考：
+- client.sh 通用http接口
+- client.py 实时流式返回结果
+
