@@ -1,0 +1,10 @@
+soundfile
+pyyaml
+kaldi_native_fbank
+scipy
+scikit-learn
+requests
+fastapi
+uvicorn
+python-multipart
+aiofiles
