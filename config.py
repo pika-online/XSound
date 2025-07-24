@@ -72,7 +72,7 @@ whisper_config = {
 }
 
 llm_config = {
-    "url": "http://47.117.188.50:9001/v1/chat/completions",
+    "url": "http://localhost:9001/v1/chat/completions",
     "api_key": "not empty",
     "model_id": "Qwen/Qwen2.5-72B-Instruct"
 }
