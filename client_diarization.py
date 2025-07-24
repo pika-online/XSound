@@ -4,7 +4,7 @@ import json
 import os
 import requests
 
-base_path = "funsound.cn/xsound"
+base_path = "localhost:9031"
 
 # 清屏函数（根据系统平台设置）
 def clear():

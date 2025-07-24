@@ -1,27 +1,34 @@
 
+#############################
+#   0. 服务地址
+###########################
+address="https://funsound.cn/xsound"
 
-url="https://funsound.cn/xsound"
+
+#############################
+#   1. 账号注册登录
+#############################
 
 # 注册账号
-curl -X POST $url/register/ -F "account=coolephemeroptera@gmail.com" -F "account_type=email" -F "password=123456" 
+curl -X POST $address/register/ -F "account=coolephemeroptera@gmail.com" -F "account_type=email" -F "password=123456" 
 # 返回结果示例：
 # {"status":"error","msg":"Account existed","result":{},"completed":null,"stream":false}
 # {"status":"success","msg":"Please enter the verification code","result":{},"completed":null,"stream":false}
 
 # 上传验证码
-curl -X POST $url/register/ -F "account=coolephemeroptera@gmail.com" -F "account_type=email" -F "password=123456" -F "code=4140"
+curl -X POST $address/register/ -F "account=coolephemeroptera@gmail.com" -F "account_type=email" -F "password=123456" -F "code=4140"
 # 返回结果示例：
 # {"status":"error","msg":"Verification code is invalid","result":{},"completed":null,"stream":false}
 # {"status":"success","msg":"Registration successfully","result":{},"completed":null,"stream":false}
 
 
-curl -X POST $url/change-password/ -F "account=coolephemeroptera@gmail.com"  -F "old_password=123456" -F "new_password=12345678" 
+curl -X POST $address/change-password/ -F "account=coolephemeroptera@gmail.com"  -F "old_password=123456" -F "new_password=12345678" 
 # 返回结果示例：
 # {"status":"success","msg":"Password updated successfully","result":{},"completed":null,"stream":false}
 
 
 # 登录获取uid
-curl -X POST $url/login/ -F "account=coolephemeroptera@gmail.com"  -F "password=12345678" 
+curl -X POST $address/login/ -F "account=coolephemeroptera@gmail.com"  -F "password=12345678" 
 # 返回结果示例：
 # {"status":"error","msg":"Password is incorrect","result":{},"completed":null,"stream":false}
 # {"status":"success","msg":"254JVMnWdh","result":{},"completed":null,"stream":false}
@@ -29,31 +36,66 @@ uid=254JVMnWdh
 
 
 
+
+
+#############################
+#   2. 账号属性
+#############################
+
 # 查询余额
-curl -X GET $url/get_account/?uid=${uid}
+curl -X GET $address/get_account/?uid=${uid}
 # 返回结果示例：
 # {"status":"error","msg":"非法uid","result":{},"completed":null,"stream":false}
 # {"status":"success","msg":"","result":{"account":"coolephemeroptera@gmail.com","vip":false,"quota":7200},"completed":null,"stream":false}
 
 
 # 查询支持语言
-curl -X GET $url/get_languages/?uid=${uid}
+curl -X GET $address/get_languages/?uid=${uid}
 # 返回结果示例：
 # {"status":"error","msg":"","result":["Afrikaans","Amharic","Arabic","English"],"completed":null,"stream":false}
 
 
 # 修改余额 (root方法)
-# curl -X POST $url/quota_change/ -F "secret=wei.0418" -F "uid=${uid}" -F "vol=-300"
-# curl -X GET $url/get_account/?uid=${uid}
+# curl -X POST $address/quota_change/ -F "secret=wei.0418" -F "uid=${uid}" -F "vol=-300"
+# curl -X GET $address/get_account/?uid=${uid}
 
 # 修改vip (root方法)
-# curl -X POST $url/vip_change/ -F "secret=wei.0418" -F "uid=${uid}" -F "vip=false"
-# curl -X GET $url/get_account/?uid=${uid}
+# curl -X POST $address/vip_change/ -F "secret=wei.0418" -F "uid=${uid}" -F "vip=false"
+# curl -X GET $address/get_account/?uid=${uid}
+
+
+
+#############################
+#   3. 一句话ASR
+#############################
+# 适用于短音频，快速识别
+# 必填字段：uid, file
+curl -X POST $address/oneshot_asr/ \
+-F "uid=${uid}" \
+-F "file=@examples/short.mp3" \
+-F "hotwords=[\"阿里巴巴\",\"心森招聘\"]"
+
+
+#############################
+#   5. 一句话TTS
+#############################
+# 必填字段：uid, text
+curl -X POST $address/oneshot_asr/ \
+-F "uid=${uid}" \
+-F "text=欢迎使用语音合成" \
+-F "tts_style=1" 
+
+
+#############################
+#   6. 在线asr
+#############################
+$address/
+
 
 
 # 语音日志转写 (流式返回)
 # [use_sv, trans_language] 是可选项，可不填
-curl -X POST $url/diarization/ \
+curl -X POST $address/diarization/ \
 -F "uid=${uid}" \
 -F "file=@examples/test.wav" \
 -F "hotwords=[\"阿里巴巴\",\"心森招聘\"]"

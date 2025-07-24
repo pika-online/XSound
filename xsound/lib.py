@@ -15,6 +15,7 @@ import random
 import copy
 import traceback
 import datetime
+import io 
 
 # audio packages
 FFMPEG = "ffmpeg"

@@ -48,6 +48,18 @@ eres2net_config = {
 }
 
 
+vits_config = {
+    "engine": "mt", # mt: 多线程， mp: 多进程
+    "num_workers": 4, # 后台worker数目
+    "stream": False,
+    "instance":{
+            "model_dir": "models/tts/vits-thin",
+            "intra_op_num_threads": 1,
+            "inter_op_num_threads": 1,
+        }
+}
+
+
 whisper_config = {
     "engine": "mp", # mt: 多线程， mp: 多进程
     "num_workers": 2, # 后台worker数目

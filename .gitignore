@@ -5,3 +5,8 @@ __pycache__
 database.json
 server.py 
 database.py
+vits
+vits.py
+config.py
+*.pid
+server.log
