@@ -54,8 +54,9 @@ curl -X GET $url/get_languages/?uid=${uid}
 # 语音日志转写 (流式返回)
 # [use_sv, trans_language] 是可选项，可不填
 curl -X POST $url/diarization/ \
--F "file=@examples/test.wav" \
 -F "uid=${uid}" \
+-F "file=@examples/test.wav" \
+-F "hotwords=[\"阿里巴巴\",\"心森招聘\"]"
 -F "engine=funasr" \
 -F "use_sv=true" \
 -F "trans_language=English" 

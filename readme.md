@@ -51,7 +51,7 @@ conda install -c nvidia cuda-runtime=12.4 cudnn=9.1 -y
 pip install --force-reinstall onnxruntime-gpu==1.22
 ```
 
-3. install nesscerry packages
+3. install necessary packages
 ```shell
 pip install -r xsound/requirements.txt
 ```

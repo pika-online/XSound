@@ -129,9 +129,7 @@ class Demacia(Diarization):
         window_size = self.window_sconds * self.sr
         windows = reshape_audio_to_BxT(audio_data, window_size)
 
-        G = batch_inference_generator(self.asr_engine,
-                                        windows,
-                                        configs=[{'hotwords':hotwords} for _ in range(len(windows))])
+        G = batch_inference_generator(self.asr_engine,windows,configs=[{'hotwords':hotwords} for _ in range(len(windows))])
         
         cache = {
             "alignment": {

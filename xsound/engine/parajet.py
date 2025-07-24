@@ -126,6 +126,7 @@ class Paraformer_Engine:
             while 1:
                 try:
                     item = self.inputs1.get(timeout=self.batch_wait_seconds)
+                    # print("get_task",time.time())
                     timestamp, taskId, waveform, config = item
                     a.append(timestamp)
                     b.append(taskId)
@@ -135,6 +136,7 @@ class Paraformer_Engine:
                     break
 
             # 处理batch
+            # print("build_batch[start]",time.time())
             while len(a):
                 _a,a = a[:self.B], a[self.B:]
                 _b,b = b[:self.B], b[self.B:]
@@ -142,8 +144,8 @@ class Paraformer_Engine:
                 _d,d = d[:self.B], d[self.B:]
 
                 _c = self._extract_fbank_batch(_c)
-                print(len(_c),_c[0].shape)
                 self.inputs2.put((_b,_c,_d))
+            # print("build_batch[end]",time.time())
 
 
         print("[END]: _backend_aggregation")
@@ -166,9 +168,11 @@ class Paraformer_Engine:
 
 
     def submit(self,taskId,input_data,config={}):
+        # print("submit[start]",time.time())
         self.inputs1.put((time.time(),taskId,input_data,config))
         if taskId not in self.results:
             self.results[taskId] = queue.Queue()
+        # print("submit[end]",time.time())
 
     def get(self,taskId,timeout=None):
         res = self.results[taskId].get(timeout=timeout)
@@ -211,31 +215,23 @@ class Paraformer_Engine:
 if __name__ == "__main__":
 
     from config import *
+    from .base import batch_inference_generator
 
     fbank_engine = Fbank_Engine(fbank_config)
     fbank_engine.start()
     asr_engine = Paraformer_Engine(parajet_config,fbank_engine=fbank_engine)
     asr_engine.start()
 
-    pcm_data = read_audio_file('examples/test.wav')
-    pcm_data = reshape_audio_to_BxT(pcm_data, asr_engine.T)
-    n = pcm_data.shape[0]
-
-    all_seconds = sum([len(x) for x in pcm_data])/16000
-    hotwords = ["心森招聘 阿里巴巴" for _ in range(n)]
-
-    with Timer() as t:
-        tasks = []
-        for segment,hotword in zip(pcm_data,hotwords):
-            taskId = generate_random_string(20)
-            asr_engine.submit(taskId,segment,{'hotwords':'hotword'})
-            tasks.append(taskId)
-        
-        for taskId in tasks:
-            result = asr_engine.get(taskId)
-            print(result["asr"])
+    input_data = np.zeros(asr_engine.T,dtype='int16')
+    audio_data = read_audio_file("examples/short.mp3")
+    input_data[:len(audio_data)] = audio_data
     
-    print(all_seconds,t.interval,all_seconds/t.interval)
+    with Timer() as t:
+        taskId = generate_random_string(10)
+        asr_engine.submit(taskId,input_data,config={"hotwords":""})
+        asr_engine.get(taskId)
+    print(t.interval)
+
     asr_engine.stop()
     fbank_engine.stop()
 

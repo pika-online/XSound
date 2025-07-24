@@ -2,16 +2,16 @@ SR = 16000
 
 
 fbank_config = {
-    "engine": "mp", # mt: 多线程， mp: 多进程
-    "num_workers": 20, # 后台worker数目
+    "engine": "mt", # mt: 多线程， mp: 多进程
+    "num_workers": 4, # 后台worker数目
     "stream": False,
     "instance":{}
 }
 
 parajet_config = {
-        "engine": "mp", # mt: 多线程， mp: 多进程
+        "engine": "mt", # mt: 多线程， mp: 多进程
         "num_workers": 4, # 后台worker数目
-        "batch_wait_seconds": 1.0, # 聚合等待时间，越小响应越快，但也会降低推理效率
+        "batch_wait_seconds": 0.1, # 聚合等待时间，越小响应越快，但也会降低推理效率
         # 模型初始化配置
         "instance":{
             "model_dir": "models/asr/parajet",
@@ -24,7 +24,7 @@ parajet_config = {
     }
 
 ct_transformer_config = {
-    "engine": "mp", # mt: 多线程， mp: 多进程
+    "engine": "mt", # mt: 多线程， mp: 多进程
     "num_workers": 4, # 后台worker数目
     "stream": False,
     "instance":{
@@ -36,7 +36,7 @@ ct_transformer_config = {
 }
 
 eres2net_config = {
-    "engine": "mp", # mt: 多线程， mp: 多进程
+    "engine": "mt", # mt: 多线程， mp: 多进程
     "num_workers": 4, # 后台worker数目
     "stream": False,
     "instance":{
@@ -60,7 +60,7 @@ whisper_config = {
 }
 
 llm_config = {
-    "url": "http://localhost/v1/chat/completions",
+    "url": "http://47.117.188.50:9001/v1/chat/completions",
     "api_key": "not empty",
     "model_id": "Qwen/Qwen2.5-72B-Instruct"
 }
