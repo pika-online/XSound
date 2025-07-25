@@ -1,5 +1,5 @@
 
-# 🎧 HHSound AI语音接口文档
+# 🎧 XSound AI语音接口文档
 
 ## 0. 服务地址
 
