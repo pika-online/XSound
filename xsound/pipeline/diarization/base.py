@@ -90,6 +90,7 @@ class Diarization:
         :param trans_language: 目标翻译语言（为空则不翻译）
         :yield: ("sentence", 句子)、("trans", 翻译结果)、("roles", 聚类角色)
         """
+        print(audio_file,hotwords,use_sv,trans_language)
         # 加载音频数据
         audio_data = read_audio_file(audio_file)
         audio_seconds = len(audio_data)/self.sr

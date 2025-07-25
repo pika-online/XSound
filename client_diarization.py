@@ -31,7 +31,7 @@ async def diarization(
     response = requests.get(f"http://{base_path}/get_languages/")
     languages = response.json()['result']
     print(f"可翻译语言: {languages}")
-    assert trans_language in languages
+    assert not trans_language or trans_language in languages
 
     async with websockets.connect(uri) as websocket:
         # S0: 发送初始化配置
@@ -140,8 +140,8 @@ async def diarization(
 # 主函数入口
 if __name__ == "__main__":
     
-    uri = f"wss://{base_path}/ws/diarization/"  # WebSocket 接口地址
-    file_path = "test.wav"  # 替换为你的音频文件路径
+    uri = f"ws://{base_path}/ws/diarization/"  # WebSocket 接口地址
+    file_path = "test1.wav"  # 替换为你的音频文件路径
     uid = "kS0LTpA2ip"
 
 
@@ -150,7 +150,8 @@ if __name__ == "__main__":
         uri=uri,
         file_path=file_path,
         filename=os.path.basename(file_path),
-        use_sv=True,
+        use_sv=False,
         uid=uid,
-        engine='funasr'  # 可替换为 whisper 等其他引擎
+        engine='whisper',
+        trans_language=""
     ))

@@ -61,7 +61,7 @@ vits_config = {
 
 
 whisper_config = {
-    "engine": "mp", # mt: 多线程， mp: 多进程
+    "engine": "mt", # mt: 多线程， mp: 多进程
     "num_workers": 2, # 后台worker数目
     "stream": True,
     "instance":{

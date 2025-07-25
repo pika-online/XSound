@@ -19,10 +19,13 @@ class CT_Transformer:
         self.token_list = os.path.join(model_dir, "tokens.json")
         with open(self.token_list, "r", encoding="utf-8") as f:
             self.token_list = json.load(f)
+        
 
         self.vocab = {}
         for i, token in enumerate(self.token_list):
             self.vocab[token] = i
+        self.unk_symbol = self.token_list[-1]
+        self.unk_id = self.vocab[self.unk_symbol]
 
         self.punc_list = self.config["model_conf"]["punc_list"]
         self.punc2id, self.id2punc = {}, {}
@@ -51,7 +54,7 @@ class CT_Transformer:
 
         split_text = code_mix_split_words(text)
         # print(split_text)
-        split_text_id = [self.vocab[token] for token in split_text]
+        split_text_id = [self.vocab.get(token,self.unk_id) for token in split_text]
         mini_sentences = split_to_mini_sentence(split_text, split_size)
         mini_sentences_id = split_to_mini_sentence(split_text_id, split_size)
         assert len(mini_sentences) == len(mini_sentences_id)
